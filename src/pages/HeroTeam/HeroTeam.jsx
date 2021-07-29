@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import HeroCard from "../../components/HeroCard/HeroCard";
 const HeroTeam = ({ team, deleteHero }) => {
+  const [stats, setStats] = useState([]);
+
+  const handleSetStats = () => {
+    const powerstats = team.map((hero) => hero.powerstats);
+    setStats(powerstats);
+  };
+
+  useEffect(() => {
+    handleSetStats();
+  }, []);
+
+  console.log(stats);
   return (
     <div className="container">
       <Navbar />
@@ -18,11 +30,23 @@ const HeroTeam = ({ team, deleteHero }) => {
             </p>
           </>
         ) : (
-          team.map((hero) => (
-            <div className="col-3">
-              <HeroCard id={hero.id} heroObject={hero} isInTeam={true} deleteHero={deleteHero} />
+          <>
+            <div className="row">
+              {team.map((hero) => (
+                <div className="col-3">
+                  <HeroCard
+                    id={hero.id}
+                    heroObject={hero}
+                    isInTeam={true}
+                    deleteHero={deleteHero}
+                  />
+                </div>
+              ))}
             </div>
-          ))
+            <div className="row">
+              <h2>Powerstats</h2>
+            </div>
+          </>
         )}
       </div>
     </div>
