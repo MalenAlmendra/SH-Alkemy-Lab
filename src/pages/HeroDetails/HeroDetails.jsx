@@ -6,31 +6,55 @@ import axios from "axios";
 const HeroDetails = () => {
   const { idHero } = useParams();
   const [completeHero, setCompleteHero] = useState({});
-  const fetchData = async () => {
-    const data = await axios.get(
-      `https://superheroapi.com/api.php/2880712572242850/${idHero}`
-    );
-    setCompleteHero(data.data);
-  };
-  
+  const [isLoading, setLoading] = useState(null);
+
   useEffect(() => {
+    setLoading(true);
     fetchData();
   }, []);
 
-  console.log(completeHero);
+  const fetchData = () => {
+    axios
+      .get(`https://superheroapi.com/api.php/2880712572242850/${idHero}`)
+      .then((response) => {
+        const { data } = response;
+        setCompleteHero(data);
+        setLoading(false);
+      });
+  };
+
+  if (isLoading === false) {
+    console.log(completeHero);
+    console.log(completeHero.appearance);
+    console.log(completeHero.name);
+    console.log(completeHero.work);
+    console.log(completeHero.biography);
+  }
+
   return (
     <div className="container">
       <Navbar />
-      <h1>
-        {idHero} - {completeHero.name}
-      </h1>
-      <p>Peso.</p>
-      <p>Altura.</p>
-      <p>Nombre.</p>
-      <p>Alias.</p>
-      <p>Color de ojos.</p>
-      <p>Color de cabello.</p>
-      <p>Lugar de trabajo.</p>
+      {isLoading || isLoading === null ? (
+        <div>Cargando </div>
+      ) : (
+        <div className='d-flex'>
+          <div className="col-6">
+            <h1>{completeHero.name}</h1>
+            <p>Peso: {completeHero.appearance.weight[1]}</p>
+            <p>Altura: {completeHero.appearance.height[1]}</p>
+            <p>
+              Alias:
+              {completeHero.biography.aliases[0]}
+            </p>
+            <p>Color de ojos: {completeHero.appearance["eye-color"]}</p>
+            <p>Color de cabello: {completeHero.appearance["hair-color"]}</p>
+            <p>Lugar de trabajo: {completeHero.work.base}</p>
+          </div>
+          <div className="col-6">
+            <img src={completeHero.image.url} alt="" />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
