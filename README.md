@@ -1,70 +1,128 @@
-# Getting Started with Create React App
+# CHALLENGE FRONTEND - React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Objetivo
 
-## Available Scripts
+Desarrollar una aplicación para crear un equipo de superhéroes que consumirá una API externa y
+mostrará diferentes atributos a nivel individual de cada miembro y del equipo consolidado
 
-In the project directory, you can run:
+- Consumir los endpoints de la siguiente API para realizar las distintas operaciones. Deberás
+autenticarte con Facebook para realizar peticiones a la misma
 
-### `yarn start`
+- Adicionalmente, las diferentes secciones que tendrá la app deberán protegerse verificando que el
+usuario autenticado disponga de un token que se almacenará en localStorage. El mismo, se obtendrá
+de una API con datos de muestra. Si un usuario intenta ingresar a cualquier ruta sin estar autenticado,
+deberá ser redirigido al login
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Para el manejo de peticiones HTTP deberá utilizarse la librería Axios.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- El sitio deberá ser responsive, y utilizar Bootstrap como punto de partida para aprovechar las
+características de la librería.
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* ¡No es indispensable hacer todo! 
 
-### `yarn build`
+Mientras más completes, mayor puntaje obtendrás, pero puedes enviar la app hasta el estadío que
+tengas en base a tu conocimiento actual. Recuerda que el objetivo del challenge es entender tu nivel
+de conocimiento actual.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Requerimientos funcionales
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+En la pantalla de Home se deberá mostrar, además de los miembros del equipo:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Acumulativo de powerstats, agrupados por cada uno, es decir: suma total de intelligence,
+strength, etc. de todos los miembros individuales del equipo.
 
-### `yarn eject`
+- El powerstat que más acumulativo tenga debería aparecer arriba para categorizar el tipo
+de equipo (inteligencia, fuerza, etc.).
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Pesos y altura promedio del equipo.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- El equipo debe tener 6 miembros. Debe haber 3 miembros con orientación buena y 3 con
+orientación mala. Esto debe validarse al intentar agregar un nuevo héroe.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Se deberá poder eliminar un miembro del equipo, lo que generará un nuevo promedio de
+peso, acumulativo de powerstats, etc.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Requerimientos técnicos
 
-## Learn More
+Aprovechando las características de React, deberán crearse las siguientes secciones, y modularizar las
+mismas en componentes reutilizables.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Formulario de Login
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+El formulario se deberá renderizar al ingresar a cualquier ruta si el usuario no está autenticado,
+conteniendo los campos:
 
-### Code Splitting
+- Email.
+- Password.
+- Botón de Enviar.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Al hacer click en “Enviar”, se deberá validar que ambos campos no estén vacíos, y mostrar un mensaje
+al usuario si lo estuviesen. Caso contrario, se deberá realizar una petición POST a la siguiente url, con
+los campos email y password en el BODY.
 
-### Analyzing the Bundle Size
+Los datos válidos para obtener un token son:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Email: challenge@alkemy.org
+- Password: react
 
-### Making a Progressive Web App
+En el caso de obtener un error de la API, se deberá mostrar una alerta, mientras que si es satisfactorio
+deberá redirigir al Home y almacenar el token obtenido en localStorage.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Las validaciones del formulario deberán realizarse utilizando la librería Formik.
 
-### Advanced Configuration
+2. Equipo
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+El Home de la aplicación mostrará a los miembros del equipo en un listado en un grid. Cada ítem del
+listado contendrá:
 
-### Deployment
+- Nombre del héroe.
+- Imagen
+- Powerstats
+- Acciones para ver el detalle o eliminarlo del equipo.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+3. Buscador de Héroes
 
-### `yarn build` fails to minify
+Para agregar un héroe a su equipo, se deberá visualizar un formulario que realice una petición GET al
+endpoint de búsqueda y muestre los resultados disponibles en un grid. Esos resultados deberán
+mostrar:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Nombre del héroe
+- Imagen
+- Acciones para agregarlo al equipo
+
+Las validaciones del formulario deberán realizarse utilizando la librería Formik.
+
+4. Detalle de Héroe
+
+Al hacer click en un héroe del equipo, se mostrarán los detalles que figuran en el endpoint. De ellos,
+mostrar:, altura, nombre completo, alias, color de ojos y cabello, y su lugar de trabajo.
+
+- Peso
+- Altura
+- Nombre.
+- Alias
+- Color de Ojos
+- Color de Cabello
+- Lugar de Trabajo
+
+# Tests
+
+De forma opcional, se podrán agregar tests unitarios para validar los elementos de la app:
+
+- Verificación de usuario autenticado al ingresar a una ruta.
+- Validación de campos en submit de formulario de login o búsqueda
+- Manejo de excepciones al obtener errores de la API.
+
+Para la implementación de los tests deberán utilizarse las librerías Jest y React Testing Library.
+
+
+# Criterios a evaluar
+
+- Diseño responsive, moderno e intuitivo.
+- Debe utilizarse Bootstrap para permitir que el proyecto sea responsive, y media queries para los elementos personalizados que se desarrollen
+- Conocimientos básicos de React.
+- Validación de formularios utilizando la librería Formik
+- Buenas prácticas de codificación
+- Buenas prácticas para nombre de rutas.
+- Código modularizado en componentes reutilizables e independientes
