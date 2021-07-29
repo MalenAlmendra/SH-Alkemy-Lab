@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 const HeroCard = ({ id, heroObject, isInTeam = false, selectHeroes, deleteHero }) => {
-  const { image, name, biography, ...others } = heroObject;
+  const { image, name} = heroObject;
 
   return (
     <div key={id} className="mt-3 card" style={{ width: "18rem" }}>
